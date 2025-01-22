@@ -146,6 +146,7 @@ const userConfig = {
         'types',
         'release',
         'custom',
+        'wip',
       ],
     ],
   },

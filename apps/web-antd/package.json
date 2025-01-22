@@ -26,6 +26,15 @@
     "#/*": "./src/*"
   },
   "dependencies": {
+    "@abp/account": "workspace:*",
+    "@abp/auditing": "workspace:*",
+    "@abp/core": "workspace:*",
+    "@abp/identity": "workspace:*",
+    "@abp/openiddict": "workspace:*",
+    "@abp/permissions": "workspace:*",
+    "@abp/request": "workspace:*",
+    "@abp/settings": "workspace:*",
+    "@abp/ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",
     "@vben/constants": "workspace:*",
