@@ -64,6 +64,12 @@ interface SendEmailConfirmCodeDto {
 interface ConfirmEmailInput {
   confirmToken: string;
 }
+interface RegisterDto {
+  appName: string;
+  emailAddress: string;
+  password: string;
+  userName: string;
+}
 
 export type {
   AuthenticatorDto,
@@ -71,6 +77,7 @@ export type {
   ChangePasswordInput,
   ConfirmEmailInput,
   ProfileDto,
+  RegisterDto,
   SendEmailConfirmCodeDto,
   TwoFactorEnabledDto,
   UpdateProfileDto,
