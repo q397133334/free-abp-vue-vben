@@ -109,7 +109,8 @@ class RequestClient {
         url,
         ...config,
       });
-      return response as T;
+      const { data } = response;
+      return data as T;
     } catch (error: any) {
       throw error.response ? error.response.data : error;
     }
