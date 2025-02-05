@@ -32,7 +32,7 @@ export default defineConfig(async () => {
               res.setHeader('x-req-proxyURL', proxyURL); // 设置响应头可以看到
             },
             changeOrigin: true,
-            rewrite: (path) => path.replace(/^\/api/, ''),
+            rewrite: (path) => path.replace(/^\/api/, '/api/'),
             secure: false,
             // mock代理目标地址
             target: 'http://abp.xiaoyou.run',

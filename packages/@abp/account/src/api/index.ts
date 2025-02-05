@@ -1,7 +1,9 @@
 import type {
   OAuthTokenResult,
+  OAuthUserInfo,
   PasswordTokenRequestModel,
   TokenResult,
+  UserInfo,
 } from '../types';
 
 import { useAppConfig } from '@vben/hooks';
@@ -46,7 +48,23 @@ export const token = async (
     tokenType: result.token_type,
   };
 };
-export const refreshToken = () => {};
+
+export const getUserInfo = async (): Promise<UserInfo> => {
+  const { request } = useRequest();
+  const result = await request<OAuthUserInfo>('/connect/userinfo', {
+    method: 'GET',
+  });
+  return {
+    ...result,
+    emailVerified: result.email_verified,
+    givenName: result.given_name,
+    phoneNumberVerified: result.phone_number_verified,
+    preferredUsername: result.preferred_username,
+    uniqueName: result.family_name,
+  };
+};
+
+// export const refreshToken = async (input: OAuthTokenRefreshModel) => {};
 export const logout = () => {};
 export const userinfo = () => {};
 export const revocat = () => {};
