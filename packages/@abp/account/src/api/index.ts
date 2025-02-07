@@ -67,5 +67,5 @@ export const getUserInfo = async (): Promise<UserInfo> => {
 // export const refreshToken = async (input: OAuthTokenRefreshModel) => {};
 export const logout = () => {};
 export const userinfo = () => {};
-export const revocat = () => {};
+// export const revocat = () => {};
 export const device = () => {};
