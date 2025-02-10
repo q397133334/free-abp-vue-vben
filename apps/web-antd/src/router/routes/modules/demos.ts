@@ -21,6 +21,14 @@ const routes: RouteRecordRaw[] = [
         path: '/demos/ant-design',
         component: () => import('#/views/demos/antd/index.vue'),
       },
+      {
+        meta: {
+          title: $t('demos.vben'),
+        },
+        name: 'SystemUser',
+        path: '/system/user',
+        component: () => import('#/views/system/user/index.vue'),
+      },
     ],
   },
 ];
