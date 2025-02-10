@@ -1,0 +1,17 @@
+{
+  "identity": {
+    "title": "身份管理",
+    "users": {
+      "title": "用户管理",
+      "list": "用户列表",
+      "create": "创建用户",
+      "edit": "编辑用户"
+    },
+    "roles": {
+      "title": "角色管理",
+      "list": "角色列表",
+      "create": "创建角色",
+      "edit": "编辑角色"
+    }
+  }
+}

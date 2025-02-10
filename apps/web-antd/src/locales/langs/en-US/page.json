@@ -10,5 +10,22 @@
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "abp": {
+    "identity": {
+      "title": "Identity",
+      "users": {
+        "title": "User Management",
+        "list": "User List",
+        "create": "User Create",
+        "edit": "User Edit"
+      },
+      "roles": {
+        "title": "角色管理",
+        "list": "角色列表",
+        "create": "创建角色",
+        "edit": "编辑角色"
+      }
+    }
   }
 }

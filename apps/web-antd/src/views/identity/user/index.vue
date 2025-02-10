@@ -8,7 +8,6 @@ import { Page } from '@vben/common-ui';
 import { createIconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
-import { formatToDateTime } from '@abp/core';
 import { useUsersApi } from '@abp/identity';
 import { useVbenVxeGrid } from '@abp/ui';
 import { Button, Dropdown, Menu } from 'ant-design-vue';
@@ -65,13 +64,6 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
     { field: 'name', title: $t('AbpIdentity.DisplayName:Name') },
     { field: 'phoneNumber', title: $t('AbpIdentity.DisplayName:PhoneNumber') },
     {
-      field: 'lockoutEnd',
-      formatter: ({ cellValue }) => {
-        return cellValue ? formatToDateTime(cellValue) : '';
-      },
-      title: $t('AbpIdentity.LockoutEnd'),
-    },
-    {
       field: 'action',
       fixed: 'right',
       slots: { default: 'action' },
@@ -99,10 +91,10 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
   },
   toolbarConfig: {
     custom: true,
-    export: true,
+    // export: true,
     // import: true,
     refresh: true,
-    zoom: true,
+    // zoom: true,
   },
 };
 

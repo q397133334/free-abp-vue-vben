@@ -13,9 +13,12 @@ import {
 } from '@vben/locales';
 import { preferences } from '@vben/preferences';
 
+import { useAbpStore } from '@abp/core';
 import antdEnLocale from 'ant-design-vue/es/locale/en_US';
 import antdDefaultLocale from 'ant-design-vue/es/locale/zh_CN';
 import dayjs from 'dayjs';
+
+import { useAbpConfigApi } from '#/api/core/abpConfiguration';
 
 const antdLocale = ref<Locale>(antdDefaultLocale);
 
@@ -31,11 +34,15 @@ const localesMap = loadLocalesMapFromDir(
  * @param lang
  */
 async function loadMessages(lang: SupportedLanguagesType) {
-  const [appLocaleMessages] = await Promise.all([
+  const [appLocaleMessages, _, abpLocales] = await Promise.all([
     localesMap[lang]?.(),
     loadThirdPartyMessage(lang),
+    loadAbpLocale(lang),
   ]);
-  return appLocaleMessages?.default;
+  return {
+    ...appLocaleMessages?.default,
+    ...abpLocales,
+  };
 }
 
 /**
@@ -88,6 +95,26 @@ async function loadAntdLocale(lang: SupportedLanguagesType) {
       break;
     }
   }
+}
+
+/**
+ * 加载abp的语言包
+ * @param lang
+ */
+async function loadAbpLocale(lang: SupportedLanguagesType) {
+  const abpStore = useAbpStore();
+  const { getLocalizationApi } = useAbpConfigApi();
+  let localization = abpStore.localization;
+
+  if (lang !== localization?.currentCulture.cultureName) {
+    localization = await getLocalizationApi({
+      cultureName: lang,
+      onlyDynamics: false,
+    });
+  }
+  abpStore.setLocalization(localization);
+  const locales = abpStore.getI18nLocales();
+  return locales;
 }
 
 async function setupI18n(app: App, options: LocaleSetupOptions = {}) {
