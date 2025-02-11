@@ -2,7 +2,7 @@
 import type { IdentityUserDto } from '@abp/identity';
 import type { VbenFormProps, VxeGridProps } from '@abp/ui';
 
-import { defineAsyncComponent, h } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
 import { createIconifyIcon } from '@vben/icons';
@@ -10,17 +10,11 @@ import { $t } from '@vben/locales';
 
 import { useUsersApi } from '@abp/identity';
 import { useVbenVxeGrid } from '@abp/ui';
-import { Button, Dropdown, Menu } from 'ant-design-vue';
+import { Button } from 'ant-design-vue';
 
-const MenuItem = Menu.Item;
 const AddIcon = createIconifyIcon('ant-design:plus-outlined');
 const CheckIcon = createIconifyIcon('ant-design:check-outlined');
 const CloseIcon = createIconifyIcon('ant-design:close-outlined');
-const PasswordIcon = createIconifyIcon('carbon:password');
-const MenuOutlined = createIconifyIcon('heroicons-outline:menu-alt-3');
-const ClaimOutlined = createIconifyIcon('la:id-card-solid');
-const PermissionsOutlined = createIconifyIcon('icon-park-outline:permissions');
-const AuditLogIcon = createIconifyIcon('fluent-mdl2:compliance-audit');
 
 // const abpStore = useAbpStore();
 // const { isEnabled } = useFeatures();
@@ -34,6 +28,11 @@ const [EditModal, userModalApi] = useVbenModal({
 
 const handleAdd = () => {
   userModalApi.setData({});
+  userModalApi.open();
+};
+
+const handleEdit = (row: IdentityUserDto) => {
+  userModalApi.setData(row as IdentityUserDto);
   userModalApi.open();
 };
 
@@ -79,7 +78,7 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: $t('AbpUi.Actions'),
-      width: 220,
+      width: 180,
     },
   ],
   exportConfig: {},
@@ -131,47 +130,17 @@ const [Grid] = useVbenVxeGrid({
           </div>
         </div>
       </template>
-      <template>
+      <template #action="{ row }">
         <div class="flex flex-row">
-          <div class="basis-1/3">
-            <Button block type="link">
+          <div class="basis-1/2">
+            <Button @click="handleEdit(row)" block type="link">
               {{ $t('AbpUi.Edit') }}
             </Button>
           </div>
-          <div class="basis-1/3">
+          <div class="basis-1/2">
             <Button block danger type="link">
               {{ $t('AbpUi.Delete') }}
             </Button>
-          </div>
-          <div class="basis-1/3">
-            <Dropdown>
-              <template #overlay>
-                <Menu>
-                  <MenuItem key="lock">
-                    {{ $t('AbpIdentity.Lock') }}
-                  </MenuItem>
-                  <MenuItem key="unlock">
-                    {{ $t('AbpIdentity.UnLock') }}
-                  </MenuItem>
-                  <MenuItem key="permissions" :icon="h(PermissionsOutlined)">
-                    {{ $t('AbpPermissionManagement.Permissions') }}
-                  </MenuItem>
-                  <MenuItem key="claims" :icon="h(ClaimOutlined)">
-                    {{ $t('AbpIdentity.ManageClaim') }}
-                  </MenuItem>
-                  <MenuItem key="password" :icon="h(PasswordIcon)">
-                    {{ $t('AbpIdentity.SetPassword') }}
-                  </MenuItem>
-                  <MenuItem key="menus" :icon="h(MenuOutlined)">
-                    {{ $t('AppPlatform.Menu:Manage') }}
-                  </MenuItem>
-                  <MenuItem key="entity-changes" :icon="h(AuditLogIcon)">
-                    {{ $t('AbpAuditLogging.EntitiesChanged') }}
-                  </MenuItem>
-                </Menu>
-              </template>
-              <Button type="link" />
-            </Dropdown>
           </div>
         </div>
       </template>
