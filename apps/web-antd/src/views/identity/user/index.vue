@@ -2,9 +2,9 @@
 import type { IdentityUserDto } from '@abp/identity';
 import type { VbenFormProps, VxeGridProps } from '@abp/ui';
 
-import { h } from 'vue';
+import { defineAsyncComponent, h } from 'vue';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import { createIconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
@@ -13,6 +13,7 @@ import { useVbenVxeGrid } from '@abp/ui';
 import { Button, Dropdown, Menu } from 'ant-design-vue';
 
 const MenuItem = Menu.Item;
+const AddIcon = createIconifyIcon('ant-design:plus-outlined');
 const CheckIcon = createIconifyIcon('ant-design:check-outlined');
 const CloseIcon = createIconifyIcon('ant-design:close-outlined');
 const PasswordIcon = createIconifyIcon('carbon:password');
@@ -25,6 +26,16 @@ const AuditLogIcon = createIconifyIcon('fluent-mdl2:compliance-audit');
 // const { isEnabled } = useFeatures();
 // const { hasAccessByCodes } = useAccess();
 const { getPagedListApi } = useUsersApi();
+
+const Modal = defineAsyncComponent(() => import('./modal.vue'));
+const [EditModal, userModalApi] = useVbenModal({
+  connectedComponent: Modal,
+});
+
+const handleAdd = () => {
+  userModalApi.setData({});
+  userModalApi.open();
+};
 
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -108,8 +119,8 @@ const [Grid] = useVbenVxeGrid({
   <Page auto-content-height>
     <Grid :table-title="$t('AbpIdentity.Users')">
       <template #toolbar-tools>
-        <Button type="primary">
-          {{ $t('AbpIdentity.NewUser') }}
+        <Button type="primary" @click="handleAdd">
+          <AddIcon /> {{ $t('AbpIdentity.NewUser') }}
         </Button>
       </template>
       <template #active="{ row }">
@@ -165,6 +176,7 @@ const [Grid] = useVbenVxeGrid({
         </div>
       </template>
     </Grid>
+    <EditModal />
   </Page>
 </template>
 

@@ -63,7 +63,7 @@ export function initRequestClient() {
         config.headers.Authorization = formatToken(accessStore.accessToken);
       }
       config.headers['Accept-Language'] = preferences.app.locale;
-      config.headers['X-Request-From'] = 'vben';
+      config.headers['X-Request-From'] = 'vben-abp-free';
       return config;
     },
   });
