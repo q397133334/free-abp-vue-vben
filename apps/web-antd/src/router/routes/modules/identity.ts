@@ -21,7 +21,7 @@ const routes: RouteRecordRaw[] = [
         component: () => import('#/views/identity/user/index.vue'),
       },
       {
-        component: () => import('#/views/identity/user/index.vue'),
+        component: () => import('#/views/identity/role/index.vue'),
         name: 'AbpIdentityRoles',
         path: '/identity/roles',
         meta: {
