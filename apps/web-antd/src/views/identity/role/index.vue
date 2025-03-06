@@ -1,36 +1,32 @@
 <script setup lang="ts">
 import type { VbenFormProps, VxeGridListeners, VxeGridProps } from '@abp/ui';
-import type { MenuInfo } from 'ant-design-vue/es/menu/src/interface';
 
 import type { IdentityRoleDto } from '../../types/roles';
 
-import { defineAsyncComponent, h } from 'vue';
+import { defineAsyncComponent } from 'vue';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
-import { createIconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
+import { useAbpStore } from '@abp/core';
 import { IdentityRolePermissions, useRolesApi } from '@abp/identity';
 import { useVbenVxeGrid } from '@abp/ui';
-// import {
-//   DeleteOutlined,
-//   EditOutlined,
-//   EllipsisOutlined,
-// } from '@ant-design/icons-vue';
-import { Button, Dropdown, Menu, message, Modal, Tag } from 'ant-design-vue';
+import { Button, message, Modal, Tag } from 'ant-design-vue';
+
+import { useIcon } from '#/icons';
 
 defineOptions({
   name: 'RoleTable',
 });
 
-const MenuItem = Menu.Item;
-const MenuOutlined = createIconifyIcon('heroicons-outline:menu-alt-3');
-const ClaimOutlined = createIconifyIcon('la:id-card-solid');
-const PermissionsOutlined = createIconifyIcon('icon-park-outline:permissions');
+const { IconAdd, IconEdit, IconDelete, IconPermissionsOutlined } = useIcon();
 const RoleModal = defineAsyncComponent(() => import('./modal.vue'));
+const PermissionModal = defineAsyncComponent(
+  () => import('../../permission/modal.vue'),
+);
 
-// const abpStore = useAbpStore();
+const abpStore = useAbpStore();
 const { hasAccessByCodes } = useAccess();
 const { cancel, deleteApi, getPagedListApi } = useRolesApi();
 
@@ -64,7 +60,7 @@ const gridOptions: VxeGridProps<IdentityRoleDto> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: $t('AbpUi.Actions'),
-      width: 220,
+      width: 250,
     },
   ],
   height: 'auto',
@@ -100,6 +96,10 @@ const gridEvents: VxeGridListeners<IdentityRoleDto> = {
 const [RoleEditModal, roleModalApi] = useVbenModal({
   connectedComponent: RoleModal,
 });
+
+const [PermissionEditModal, permissionModalApi] = useVbenModal({
+  connectedComponent: PermissionModal,
+});
 const [Grid, { query }] = useVbenVxeGrid({
   formOptions,
   gridEvents,
@@ -132,13 +132,15 @@ const handleDelete = (row: IdentityRoleDto) => {
   });
 };
 
-const handleMenuClick = async (row: IdentityRoleDto, info: MenuInfo) => {
-  switch (info.key) {
-    case 'permissions': {
-      // const roles = abpStore.application?.currentUser.roles ?? [];
-      break;
-    }
-  }
+const handlePermission = async (row: IdentityRoleDto) => {
+  const roles = abpStore.application?.currentUser.roles ?? [];
+  permissionModalApi.setData({
+    providerKey: row.name,
+    providerName: 'R',
+    displayName: row.name,
+    roles,
+  });
+  permissionModalApi.open();
 };
 </script>
 
@@ -151,6 +153,7 @@ const handleMenuClick = async (row: IdentityRoleDto, info: MenuInfo) => {
           v-access:code="[IdentityRolePermissions.Create]"
           @click="handleAdd"
         >
+          <IconAdd />
           {{ $t('AbpIdentity.NewRole') }}
         </Button>
       </template>
@@ -168,81 +171,49 @@ const handleMenuClick = async (row: IdentityRoleDto, info: MenuInfo) => {
       </template>
       <template #action="{ row }">
         <div class="flex flex-row">
-          <div class="basis-1/2">
+          <div class="basis-1/3">
             <Button
-              :icon="createIconifyIcon('ant-design:edit-outlined')"
               block
               type="link"
               v-access:code="[IdentityRolePermissions.Update]"
               @click="handleEdit(row)"
             >
+              <IconEdit />
               {{ $t('AbpUi.Edit') }}
             </Button>
           </div>
-          <div class="basis-1/2">
+          <div class="basis-1/3">
             <Button
               :disabled="row.isStatic"
-              :icon="createIconifyIcon('ant-design:delete-outlined')"
               block
               danger
               type="link"
               v-access:code="[IdentityRolePermissions.Delete]"
               @click="handleDelete(row)"
             >
+              <IconDelete />
               {{ $t('AbpUi.Delete') }}
             </Button>
           </div>
-          <Dropdown>
-            <template #overlay>
-              <Menu @click="(info) => handleMenuClick(row, info)">
-                <MenuItem
-                  v-if="
-                    hasAccessByCodes([
-                      IdentityRolePermissions.ManagePermissions,
-                    ])
-                  "
-                  key="permissions"
-                  :icon="h(PermissionsOutlined)"
-                >
-                  {{ $t('AbpPermissionManagement.Permissions') }}
-                </MenuItem>
-                <MenuItem
-                  v-if="
-                    hasAccessByCodes([IdentityRolePermissions.ManageClaims])
-                  "
-                  key="claims"
-                  :icon="h(ClaimOutlined)"
-                >
-                  {{ $t('AbpIdentity.ManageClaim') }}
-                </MenuItem>
-                <MenuItem
-                  v-if="hasAccessByCodes(['Platform.Menu.ManageRoles'])"
-                  key="menus"
-                  :icon="h(MenuOutlined)"
-                >
-                  {{ $t('AppPlatform.Menu:Manage') }}
-                </MenuItem>
-                <!-- <MenuItem
-                v-if="
-                  isEnabled('AbpAuditing.Logging.AuditLog') &&
-                  hasAccessByCodes([AuditLogPermissions.Default])
-                "
-                key="entity-changes"
-                :icon="h(AuditLogIcon)"
-              >
-                {{ $t('AbpAuditLogging.EntitiesChanged') }}
-              </MenuItem> -->
-              </Menu>
-            </template>
+          <div class="basis-1/3">
             <Button
-              :icon="createIconifyIcon('ant-design:ellipsis-outlined')"
+              v-if="
+                hasAccessByCodes([IdentityRolePermissions.ManagePermissions])
+              "
+              block
+              danger
               type="link"
-            />
-          </Dropdown>
+              @click="handlePermission(row)"
+            >
+              <IconPermissionsOutlined />
+              {{ $t('AbpPermissionManagement.Permissions') }}
+            </Button>
+          </div>
         </div>
       </template>
     </Grid>
     <RoleEditModal @change="() => query()" />
+    <PermissionEditModal />
   </Page>
 </template>
 

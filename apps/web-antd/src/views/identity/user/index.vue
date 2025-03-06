@@ -5,16 +5,15 @@ import type { VbenFormProps, VxeGridProps } from '@abp/ui';
 import { defineAsyncComponent } from 'vue';
 
 import { Page, useVbenModal } from '@vben/common-ui';
-import { createIconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import { useUsersApi } from '@abp/identity';
 import { useVbenVxeGrid } from '@abp/ui';
 import { Button } from 'ant-design-vue';
 
-const AddIcon = createIconifyIcon('ant-design:plus-outlined');
-const CheckIcon = createIconifyIcon('ant-design:check-outlined');
-const CloseIcon = createIconifyIcon('ant-design:close-outlined');
+import { useIcon } from '#/icons';
+
+const { IconAdd, IconCheck, IconClose, IconDelete, IconEdit } = useIcon();
 
 // const abpStore = useAbpStore();
 // const { isEnabled } = useFeatures();
@@ -119,14 +118,14 @@ const [Grid] = useVbenVxeGrid({
     <Grid :table-title="$t('AbpIdentity.Users')">
       <template #toolbar-tools>
         <Button type="primary" @click="handleAdd">
-          <AddIcon /> {{ $t('AbpIdentity.NewUser') }}
+          <IconAdd /> {{ $t('AbpIdentity.NewUser') }}
         </Button>
       </template>
       <template #active="{ row }">
         <div class="flex flex-row justify-center">
           <div :class="row.isActive ? 'text-green-600' : 'text-red-600'">
-            <CheckIcon v-if="row.isActive" />
-            <CloseIcon v-else />
+            <IconCheck v-if="row.isActive" />
+            <IconClose v-else />
           </div>
         </div>
       </template>
@@ -134,11 +133,13 @@ const [Grid] = useVbenVxeGrid({
         <div class="flex flex-row">
           <div class="basis-1/2">
             <Button @click="handleEdit(row)" block type="link">
+              <IconEdit />
               {{ $t('AbpUi.Edit') }}
             </Button>
           </div>
           <div class="basis-1/2">
             <Button block danger type="link">
+              <IconDelete />
               {{ $t('AbpUi.Delete') }}
             </Button>
           </div>

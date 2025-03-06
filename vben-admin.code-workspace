@@ -57,6 +57,10 @@
       "path": "packages/@abp/identity",
     },
     {
+      "name": "@abp/permissions",
+      "path": "packages/@abp/permissions",
+    },
+    {
       "name": "@abp/request",
       "path": "packages/@abp/request",
     },
