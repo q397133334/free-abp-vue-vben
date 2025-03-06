@@ -8,7 +8,7 @@ import { useRouter } from 'vue-router';
 import { DEFAULT_HOME_PATH, LOGIN_PATH } from '@vben/constants';
 import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
-import { getUserInfo, token } from '@abp/account';
+import { useTokenApi, useUserInfoApi } from '@abp/account';
 import { useAbpStore } from '@abp/core';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
@@ -16,6 +16,9 @@ import { defineStore } from 'pinia';
 import { logoutApi } from '#/api';
 import { useAbpConfigApi } from '#/api/core/abpConfiguration';
 import { $t } from '#/locales';
+
+const { getUserInfo } = useUserInfoApi();
+const { token } = useTokenApi();
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();

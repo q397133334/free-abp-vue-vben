@@ -16,9 +16,7 @@ export function useTokenApi() {
    * @param input 参数
    * @returns 用户token
    */
-  async function loginApi(
-    input: PasswordTokenRequestModel,
-  ): Promise<TokenResult> {
+  async function token(input: PasswordTokenRequestModel): Promise<TokenResult> {
     const { audience, clientId, clientSecret } = useAppConfig(
       import.meta.env,
       import.meta.env.PROD,
@@ -49,7 +47,7 @@ export function useTokenApi() {
    * @param input 参数
    * @returns 用户token
    */
-  async function refreshTokenApi(input: OAuthTokenRefreshModel) {
+  async function refreshToken(input: OAuthTokenRefreshModel) {
     const { audience, clientId, clientSecret } = useAppConfig(
       import.meta.env,
       import.meta.env.PROD,
@@ -77,7 +75,7 @@ export function useTokenApi() {
 
   return {
     cancel,
-    loginApi,
-    refreshTokenApi,
+    refreshToken,
+    token,
   };
 }

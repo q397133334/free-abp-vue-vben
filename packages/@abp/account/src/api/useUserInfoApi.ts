@@ -8,7 +8,7 @@ export function useUserInfoApi() {
   /**
    * 获取用户信息
    */
-  async function getUserInfoApi(): Promise<UserInfo> {
+  async function getUserInfo(): Promise<UserInfo> {
     const result = await request<OAuthUserInfo>('/connect/userinfo', {
       method: 'GET',
     });
@@ -24,6 +24,6 @@ export function useUserInfoApi() {
 
   return {
     cancel,
-    getUserInfoApi,
+    getUserInfo,
   };
 }
