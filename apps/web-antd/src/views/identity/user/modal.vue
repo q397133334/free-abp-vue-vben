@@ -32,7 +32,7 @@ const TabPane = Tabs.TabPane;
 
 const defaultModal = {
   isActive: true,
-};
+} as IdentityUserDto;
 
 const activedTab = ref('info');
 const form = ref<FormInstance>();
@@ -75,6 +75,7 @@ const [Modal, modalApi] = useVbenModal({
       activedTab.value = 'info';
       formModel.value = {
         ...defaultModal,
+        id: null,
         userName: '',
         email: '',
         password: '',

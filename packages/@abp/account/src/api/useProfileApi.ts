@@ -1,8 +1,6 @@
 import type {
   ChangePasswordInput,
-  ConfirmEmailInput,
   ProfileDto,
-  SendEmailConfirmCodeDto,
   UpdateProfileDto,
 } from '../types/profile';
 
@@ -44,34 +42,10 @@ export function useProfileApi() {
     });
   }
 
-  /**
-   * 发送邮件确认链接
-   * @param input 参数
-   */
-  function sendEmailConfirmLink(input: SendEmailConfirmCodeDto): Promise<void> {
-    return request('/api/account/my-profile/send-email-confirm-link', {
-      data: input,
-      method: 'POST',
-    });
-  }
-
-  /**
-   * 确认邮件
-   * @param input 参数
-   */
-  function confirmEmail(input: ConfirmEmailInput) {
-    return request('/api/account/my-profile/confirm-email', {
-      data: input,
-      method: 'PUT',
-    });
-  }
-
   return {
     cancel,
     changePassword,
-    confirmEmail,
     get,
-    sendEmailConfirmLink,
     update,
   };
 }

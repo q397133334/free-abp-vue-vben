@@ -3,10 +3,9 @@ import type { NotificationItem } from '@vben/layouts';
 
 import { computed, ref, watch } from 'vue';
 
-import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
+import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
 import { useWatermark } from '@vben/hooks';
-import { BookOpenText, CircleHelp, MdiGithub } from '@vben/icons';
+import { IconPassword, IconPersonal } from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
@@ -15,11 +14,12 @@ import {
 } from '@vben/layouts';
 import { preferences } from '@vben/preferences';
 import { useAccessStore, useUserStore } from '@vben/stores';
-import { openWindow } from '@vben/utils';
 
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
+
+import MyProfileModal from '../views/account/my-profile-modal.vue';
 
 const notifications = ref<NotificationItem[]>([
   {
@@ -59,34 +59,24 @@ const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
-
+// const MyProfileModal = defineAsyncComponent(
+//   () => import('../views/account/my-profile-modal.vue'),
+// );
+const [MyProfileEditModal, myProfileModalApi] = useVbenModal({
+  connectedComponent: MyProfileModal,
+});
 const menus = computed(() => [
   {
     handler: () => {
-      openWindow(VBEN_DOC_URL, {
-        target: '_blank',
-      });
+      myProfileModalApi.open();
     },
-    icon: BookOpenText,
-    text: $t('ui.widgets.document'),
+    icon: IconPersonal,
+    text: $t('AbpAccount.ProfileTab:PersonalInfo'),
   },
   {
-    handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
-        target: '_blank',
-      });
-    },
-    icon: MdiGithub,
-    text: 'GitHub',
-  },
-  {
-    handler: () => {
-      openWindow(`${VBEN_GITHUB_URL}/issues`, {
-        target: '_blank',
-      });
-    },
-    icon: CircleHelp,
-    text: $t('ui.widgets.qa'),
+    handler: () => {},
+    icon: IconPassword,
+    text: $t('AbpAccount.ProfileTab:Password'),
   },
 ]);
 
@@ -129,8 +119,8 @@ watch(
         :avatar
         :menus
         :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        description="description"
+        tag-text="tag-text"
         @logout="handleLogout"
       />
     </template>
@@ -153,5 +143,6 @@ watch(
     <template #lock-screen>
       <LockScreen :avatar @to-login="handleLogout" />
     </template>
+    <MyProfileEditModal />
   </BasicLayout>
 </template>

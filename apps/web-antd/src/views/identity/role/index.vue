@@ -1,12 +1,17 @@
 <script setup lang="ts">
+import type { IdentityRoleDto } from '@abp/identity';
 import type { VbenFormProps, VxeGridListeners, VxeGridProps } from '@abp/ui';
-
-import type { IdentityRoleDto } from '../../types/roles';
 
 import { defineAsyncComponent } from 'vue';
 
 import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
+import {
+  IconAdd,
+  IconDelete,
+  IconEdit,
+  IconPermissionsOutlined,
+} from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import { useAbpStore } from '@abp/core';
@@ -14,13 +19,10 @@ import { IdentityRolePermissions, useRolesApi } from '@abp/identity';
 import { useVbenVxeGrid } from '@abp/ui';
 import { Button, message, Modal, Tag } from 'ant-design-vue';
 
-import { useIcon } from '#/icons';
-
 defineOptions({
-  name: 'RoleTable',
+  name: 'Role',
 });
 
-const { IconAdd, IconEdit, IconDelete, IconPermissionsOutlined } = useIcon();
 const RoleModal = defineAsyncComponent(() => import('./modal.vue'));
 const PermissionModal = defineAsyncComponent(
   () => import('../../permission/modal.vue'),
