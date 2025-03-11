@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
-import { computed, ref, watch } from 'vue';
+import { computed, defineAsyncComponent, ref, watch } from 'vue';
 
 import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
 import { useWatermark } from '@vben/hooks';
@@ -18,8 +18,6 @@ import { useAccessStore, useUserStore } from '@vben/stores';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 import LoginForm from '#/views/_core/authentication/login.vue';
-
-import MyProfileModal from '../views/account/my-profile-modal.vue';
 
 const notifications = ref<NotificationItem[]>([
   {
@@ -59,9 +57,9 @@ const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
-// const MyProfileModal = defineAsyncComponent(
-//   () => import('../views/account/my-profile-modal.vue'),
-// );
+const MyProfileModal = defineAsyncComponent(
+  () => import('../views/account/my-profile-modal.vue'),
+);
 const [MyProfileEditModal, myProfileModalApi] = useVbenModal({
   connectedComponent: MyProfileModal,
 });
@@ -143,6 +141,6 @@ watch(
     <template #lock-screen>
       <LockScreen :avatar @to-login="handleLogout" />
     </template>
-    <MyProfileEditModal />
   </BasicLayout>
+  <MyProfileEditModal />
 </template>

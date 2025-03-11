@@ -5,6 +5,7 @@ import type { FormInstance } from 'ant-design-vue';
 import { ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
+import { $t } from '@vben/locales';
 
 import { useProfileApi } from '@abp/account';
 import { Form, Input } from 'ant-design-vue';
@@ -17,6 +18,7 @@ const form = ref<FormInstance>();
 const formModel = ref<UpdateProfileDto>({} as UpdateProfileDto);
 
 const [Modal, modalApi] = useVbenModal({
+  title: $t('AbpAccount.MyProfile'),
   onCancel() {
     modalApi.close();
   },
