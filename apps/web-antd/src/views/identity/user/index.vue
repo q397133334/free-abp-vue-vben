@@ -4,37 +4,31 @@ import type { VbenFormProps, VxeGridProps } from '@abp/ui';
 
 import { defineAsyncComponent } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { Page, useVbenModal } from '@vben/common-ui';
-import { createIconifyIcon } from '@vben/icons';
+import {
+  IconAdd,
+  IconCheck,
+  IconClose,
+  IconDelete,
+  IconEdit,
+  IconPermissionsOutlined,
+} from '@vben/icons';
 import { $t } from '@vben/locales';
 
-import { useUsersApi } from '@abp/identity';
+import { useAbpStore } from '@abp/core';
+import { IdentityUserPermissions, useUsersApi } from '@abp/identity';
 import { useVbenVxeGrid } from '@abp/ui';
-import { Button } from 'ant-design-vue';
+import { Button, message, Popconfirm } from 'ant-design-vue';
 
-const AddIcon = createIconifyIcon('ant-design:plus-outlined');
-const CheckIcon = createIconifyIcon('ant-design:check-outlined');
-const CloseIcon = createIconifyIcon('ant-design:close-outlined');
-
-// const abpStore = useAbpStore();
-// const { isEnabled } = useFeatures();
-// const { hasAccessByCodes } = useAccess();
-const { getPagedListApi } = useUsersApi();
-
-const Modal = defineAsyncComponent(() => import('./modal.vue'));
-const [EditModal, userModalApi] = useVbenModal({
-  connectedComponent: Modal,
+defineOptions({
+  name: 'User',
 });
 
-const handleAdd = () => {
-  userModalApi.setData({});
-  userModalApi.open();
-};
-
-const handleEdit = (row: IdentityUserDto) => {
-  userModalApi.setData(row as IdentityUserDto);
-  userModalApi.open();
-};
+const abpStore = useAbpStore();
+// const { isEnabled } = useFeatures();
+const { hasAccessByCodes } = useAccess();
+const { getPagedListApi, deleteApi } = useUsersApi();
 
 const formOptions: VbenFormProps = {
   // 默认展开
@@ -78,7 +72,7 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
       fixed: 'right',
       slots: { default: 'action' },
       title: $t('AbpUi.Actions'),
-      width: 180,
+      width: 250,
     },
   ],
   exportConfig: {},
@@ -107,11 +101,50 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
     // zoom: true,
   },
 };
-
-const [Grid] = useVbenVxeGrid({
+const [Grid, { query }] = useVbenVxeGrid({
   formOptions,
   gridOptions,
 });
+const UserModal = defineAsyncComponent(() => import('./modal.vue'));
+const [EditModal, userModalApi] = useVbenModal({
+  connectedComponent: UserModal,
+});
+
+const PermissionModal = defineAsyncComponent(
+  () => import('#/views/permission/modal.vue'),
+);
+
+const [PermissionEditModal, permissionModalApi] = useVbenModal({
+  connectedComponent: PermissionModal,
+});
+const handleAdd = () => {
+  userModalApi.setData({ id: null });
+  userModalApi.open();
+};
+
+const handleEdit = (row: IdentityUserDto) => {
+  userModalApi.setData(row as IdentityUserDto);
+  userModalApi.open();
+};
+
+const handleDelete = async (row: IdentityUserDto) => {
+  try {
+    await deleteApi(row.id);
+    message.success($t('AbpUi.SuccessfullyDeleted'));
+    query();
+  } catch {}
+};
+
+const handlePermission = async (row: IdentityUserDto) => {
+  const roles = abpStore.application?.currentUser.roles ?? [];
+  permissionModalApi.setData({
+    providerKey: row.userName,
+    providerName: 'R',
+    displayName: row.userName,
+    roles,
+  });
+  permissionModalApi.open();
+};
 </script>
 
 <template>
@@ -119,33 +152,68 @@ const [Grid] = useVbenVxeGrid({
     <Grid :table-title="$t('AbpIdentity.Users')">
       <template #toolbar-tools>
         <Button type="primary" @click="handleAdd">
-          <AddIcon /> {{ $t('AbpIdentity.NewUser') }}
+          <IconAdd /> {{ $t('AbpIdentity.NewUser') }}
         </Button>
       </template>
       <template #active="{ row }">
         <div class="flex flex-row justify-center">
           <div :class="row.isActive ? 'text-green-600' : 'text-red-600'">
-            <CheckIcon v-if="row.isActive" />
-            <CloseIcon v-else />
+            <IconCheck v-if="row.isActive" />
+            <IconClose v-else />
           </div>
         </div>
       </template>
       <template #action="{ row }">
         <div class="flex flex-row">
-          <div class="basis-1/2">
+          <div class="basis-1/3">
             <Button @click="handleEdit(row)" block type="link">
+              <IconEdit />
               {{ $t('AbpUi.Edit') }}
             </Button>
           </div>
-          <div class="basis-1/2">
-            <Button block danger type="link">
-              {{ $t('AbpUi.Delete') }}
+          <div class="basis-1/3">
+            <Popconfirm
+              placement="topRight"
+              v-if="
+                hasAccessByCodes([IdentityUserPermissions.ManagePermissions])
+              "
+              :title="$t('AbpUi.AreYouSure')"
+              @confirm="
+                async () => {
+                  handleDelete(row);
+                }
+              "
+            >
+              <Button block type="link" danger>
+                <IconDelete />
+                {{ $t('AbpUi.Delete') }}
+              </Button>
+            </Popconfirm>
+          </div>
+          <div class="basis-1/3">
+            <Button
+              block
+              type="link"
+              @click="handlePermission(row)"
+              v-if="
+                hasAccessByCodes([IdentityUserPermissions.ManagePermissions])
+              "
+            >
+              <IconPermissionsOutlined />
+              {{ $t('AbpPermissionManagement.Permissions') }}
             </Button>
           </div>
         </div>
       </template>
     </Grid>
-    <EditModal />
+    <EditModal
+      @change="
+        () => {
+          query();
+        }
+      "
+    />
+    <PermissionEditModal />
   </Page>
 </template>
 

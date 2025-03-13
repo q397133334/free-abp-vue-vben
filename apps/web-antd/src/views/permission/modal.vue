@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import type { PermissionTree } from '@abp/permissions';
 import type { CheckboxChangeEvent } from 'ant-design-vue/es/checkbox/interface';
 import type {
   DataNode,
@@ -6,16 +7,11 @@ import type {
 } from 'ant-design-vue/es/vc-tree/interface';
 import type { CheckInfo } from 'ant-design-vue/es/vc-tree/props';
 
-import type { PermissionTree } from '../../types/permissions';
-
 import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { Card, Checkbox, Divider, message, Tabs, Tree } from 'ant-design-vue';
-
-import { usePermissionsApi } from '../../api/usePermissionsApi';
 import {
   generatePermissionTree,
   getGrantedPermissionKeys,
@@ -25,7 +21,9 @@ import {
   getPermissionCount,
   getPermissionsCount,
   toPermissionList,
-} from '../../utils';
+  usePermissionsApi,
+} from '@abp/permissions';
+import { Card, Checkbox, Divider, message, Tabs, Tree } from 'ant-design-vue';
 
 defineOptions({
   name: 'PermissionModal',

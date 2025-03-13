@@ -49,10 +49,6 @@
       "path": "packages/@abp/account",
     },
     {
-      "name": "@abp/auditing",
-      "path": "packages/@abp/auditing",
-    },
-    {
       "name": "@abp/core",
       "path": "packages/@abp/core",
     },
@@ -61,24 +57,12 @@
       "path": "packages/@abp/identity",
     },
     {
-      "name": "@abp/notifications",
-      "path": "packages/@abp/notifications",
-    },
-    {
-      "name": "@abp/openiddict",
-      "path": "packages/@abp/openiddict",
-    },
-    {
       "name": "@abp/permissions",
       "path": "packages/@abp/permissions",
     },
     {
       "name": "@abp/request",
       "path": "packages/@abp/request",
-    },
-    {
-      "name": "@abp/settings",
-      "path": "packages/@abp/settings",
     },
     {
       "name": "@abp/ui",
