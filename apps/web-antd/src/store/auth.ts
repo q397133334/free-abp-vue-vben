@@ -103,7 +103,9 @@ export const useAuthStore = defineStore('auth', () => {
   async function fetchUserInfo(): Promise<UserInfo> {
     let userInfo: null | (UserInfo & { [key: string]: any }) = null;
     const userInfoRes = await getUserInfo();
-    const abpConfig = await getConfigApi();
+    const abpConfig = await getConfigApi({
+      includeLocalizationResources: false,
+    });
     userInfo = {
       userId: userInfoRes.sub ?? abpConfig.currentUser.id,
       username: userInfoRes.uniqueName ?? abpConfig.currentUser.userName,

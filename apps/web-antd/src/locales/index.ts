@@ -106,12 +106,12 @@ async function loadAbpLocale(lang: SupportedLanguagesType) {
   const { getLocalizationApi } = useAbpConfigApi();
   let localization = abpStore.localization;
 
-  if (lang !== localization?.currentCulture.cultureName) {
-    localization = await getLocalizationApi({
-      cultureName: lang,
-      onlyDynamics: false,
-    });
-  }
+  // if (lang !== localization?.currentCulture.cultureName) {
+  localization = await getLocalizationApi({
+    cultureName: lang,
+    onlyDynamics: false,
+  });
+  // }
   abpStore.setLocalization(localization);
   const locales = abpStore.getI18nLocales();
   return locales;
