@@ -25,7 +25,7 @@ const routes: RouteRecordRaw[] = [
         name: 'AbpIdentityRoles',
         path: '/identity/roles',
         meta: {
-          title: $t('abp.identity.roles.title'),
+          title: $t(`abp.identity.roles.title`),
           icon: 'carbon:user-role',
         },
       },

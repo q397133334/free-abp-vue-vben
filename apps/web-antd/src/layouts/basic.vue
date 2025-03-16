@@ -1,11 +1,12 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
 
-import { computed, defineAsyncComponent, ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 
-import { AuthenticationLoginExpiredModal, useVbenModal } from '@vben/common-ui';
+import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
 import { useWatermark } from '@vben/hooks';
-import { IconPassword, IconPersonal } from '@vben/icons';
+import { IconPersonal } from '@vben/icons';
 import {
   BasicLayout,
   LockScreen,
@@ -49,7 +50,7 @@ const notifications = ref<NotificationItem[]>([
     title: '代办提醒',
   },
 ]);
-
+const router = useRouter();
 const userStore = useUserStore();
 const authStore = useAuthStore();
 const accessStore = useAccessStore();
@@ -57,24 +58,14 @@ const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
-const MyProfileModal = defineAsyncComponent(
-  () => import('../views/account/my-profile-modal.vue'),
-);
-const [MyProfileEditModal, myProfileModalApi] = useVbenModal({
-  connectedComponent: MyProfileModal,
-});
+
 const menus = computed(() => [
   {
     handler: () => {
-      myProfileModalApi.open();
+      router.push('/account/my-profile');
     },
     icon: IconPersonal,
-    text: $t('AbpAccount.ProfileTab:PersonalInfo'),
-  },
-  {
-    handler: () => {},
-    icon: IconPassword,
-    text: $t('AbpAccount.ProfileTab:Password'),
+    text: $t('AbpAccount.MyAccount'),
   },
 ]);
 
@@ -142,5 +133,4 @@ watch(
       <LockScreen :avatar @to-login="handleLogout" />
     </template>
   </BasicLayout>
-  <MyProfileEditModal />
 </template>

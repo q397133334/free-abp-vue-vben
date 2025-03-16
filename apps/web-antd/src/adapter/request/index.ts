@@ -6,7 +6,7 @@ import {
 import { useAccessStore } from '@vben/stores';
 
 import { useOAuthError, useTokenApi } from '@abp/account';
-import { requestClient, useWrapperResult } from '@abp/request';
+import { requestClient, useErrorFormat, useWrapperResult } from '@abp/request';
 import { message } from 'ant-design-vue';
 
 import { useAuthStore } from '#/store';
@@ -102,6 +102,13 @@ export function initRequestClient() {
     errorMessageResponseInterceptor((msg: string, error) => {
       // 这里可以根据业务进行定制,你可以拿到 error 内的信息进行定制化处理，根据不同的 code 做不同的提示，而不是直接使用 message.error 提示 msg
       // 当前mock接口返回的错误字段是 error 或者 message
+
+      const { ifError, hasError } = useErrorFormat(error?.response);
+      if (hasError()) {
+        const msg = ifError();
+        message.error(msg);
+        return;
+      }
       const responseData = error?.response?.data ?? {};
       if (responseData?.error) {
         const { formatError } = useOAuthError();
