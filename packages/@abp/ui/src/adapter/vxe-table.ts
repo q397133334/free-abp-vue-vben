@@ -22,6 +22,7 @@ function useVbenVxeGrid(options: VxeGridProps) {
             // 全局禁用vxe-table的表单配置，使用formOptions
             enabled: false,
           },
+          height: 'auto',
           minHeight: 180,
           pagerConfig: {
             pageSize: 10,
@@ -31,7 +32,7 @@ function useVbenVxeGrid(options: VxeGridProps) {
             autoLoad: true,
             response: {
               result: 'items',
-              total: 'total',
+              total: 'totalCount',
               list: 'items',
             },
             showActiveMsg: true,
@@ -40,6 +41,13 @@ function useVbenVxeGrid(options: VxeGridProps) {
           round: true,
           showOverflow: true,
           size: 'small',
+          toolbarConfig: {
+            // custom: true,
+            // export: true,
+            // import: true,
+            refresh: true,
+            zoom: true,
+          },
         },
       });
 

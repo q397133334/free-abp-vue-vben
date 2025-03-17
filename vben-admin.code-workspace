@@ -57,6 +57,10 @@
       "path": "packages/@abp/identity",
     },
     {
+      "name": "@abp/multi-tenancy",
+      "path": "packages/@abp/multi-tenancy",
+    },
+    {
       "name": "@abp/permissions",
       "path": "packages/@abp/permissions",
     },

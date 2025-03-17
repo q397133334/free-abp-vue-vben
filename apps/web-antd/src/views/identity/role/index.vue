@@ -65,9 +65,7 @@ const gridOptions: VxeGridProps<IdentityRoleDto> = {
       width: 250,
     },
   ],
-  height: 'auto',
-  exportConfig: {},
-  keepSource: true,
+
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
@@ -78,17 +76,6 @@ const gridOptions: VxeGridProps<IdentityRoleDto> = {
         });
       },
     },
-    response: {
-      total: 'totalCount',
-      list: 'items',
-    },
-  },
-  toolbarConfig: {
-    custom: true,
-    export: true,
-    // import: true,
-    refresh: true,
-    zoom: true,
   },
 };
 

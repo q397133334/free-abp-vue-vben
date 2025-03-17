@@ -75,9 +75,6 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
       width: 250,
     },
   ],
-  exportConfig: {},
-  height: 'auto',
-  keepSource: true,
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
@@ -88,17 +85,6 @@ const gridOptions: VxeGridProps<IdentityUserDto> = {
         });
       },
     },
-    response: {
-      total: 'totalCount',
-      list: 'items',
-    },
-  },
-  toolbarConfig: {
-    custom: true,
-    // export: true,
-    // import: true,
-    refresh: true,
-    // zoom: true,
   },
 };
 const [Grid, { query }] = useVbenVxeGrid({

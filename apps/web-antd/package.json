@@ -29,6 +29,7 @@
     "@abp/account": "workspace:*",
     "@abp/core": "workspace:*",
     "@abp/identity": "workspace:*",
+    "@abp/multi-tenancy": "workspace:*",
     "@abp/permissions": "workspace:*",
     "@abp/request": "workspace:*",
     "@abp/ui": "workspace:*",

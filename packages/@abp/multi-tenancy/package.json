@@ -1,0 +1,30 @@
+{
+  "name": "@abp/multi-tenancy",
+  "version": "8.3.2",
+  "homepage": "https://github.com/colinin/abp-next-admin",
+  "bugs": "https://github.com/colinin/abp-next-admin/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colinin/abp-next-admin.git",
+    "directory": "packages/@abp/multi-tenancy"
+  },
+  "license": "MIT",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    }
+  },
+  "dependencies": {
+    "@abp/core": "workspace:*",
+    "@abp/permissions": "workspace:*",
+    "@abp/request": "workspace:*",
+    "@vben/access": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "vue": "catalog:*"
+  }
+}
