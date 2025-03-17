@@ -114,6 +114,7 @@ async function loadAbpLocale(lang: SupportedLanguagesType) {
   // }
   abpStore.setLocalization(localization);
   const locales = abpStore.getI18nLocales();
+
   return locales;
 }
 

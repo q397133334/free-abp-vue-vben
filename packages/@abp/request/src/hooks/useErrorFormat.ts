@@ -20,9 +20,21 @@ export function useErrorFormat(response: AxiosResponse) {
     }
     throw Object.assign({}, response, { message: errorMessage, response });
   }
+  function ifError(): string {
+    if (!hasError()) return '';
+    const errorJson = data.error as RemoteServiceErrorInfo;
+    let errorMessage = errorJson.message;
+    if (errorJson.validationErrors) {
+      errorMessage += errorJson.validationErrors
+        .map((error) => error.message)
+        .join('\n');
+    }
+    return errorMessage as string;
+  }
 
   return {
     hasError,
+    ifError,
     throwIfError,
   };
 }
