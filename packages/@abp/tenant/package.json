@@ -1,12 +1,12 @@
 {
-  "name": "@abp/multi-tenancy",
+  "name": "@abp/tenant",
   "version": "8.3.2",
   "homepage": "https://github.com/colinin/abp-next-admin",
   "bugs": "https://github.com/colinin/abp-next-admin/issues",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/colinin/abp-next-admin.git",
-    "directory": "packages/@abp/multi-tenancy"
+    "directory": "packages/@abp/tenant"
   },
   "license": "MIT",
   "type": "module",

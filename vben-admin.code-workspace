@@ -53,12 +53,12 @@
       "path": "packages/@abp/core",
     },
     {
-      "name": "@abp/identity",
-      "path": "packages/@abp/identity",
+      "name": "@abp/features",
+      "path": "packages/@abp/features",
     },
     {
-      "name": "@abp/multi-tenancy",
-      "path": "packages/@abp/multi-tenancy",
+      "name": "@abp/identity",
+      "path": "packages/@abp/identity",
     },
     {
       "name": "@abp/permissions",
@@ -67,6 +67,10 @@
     {
       "name": "@abp/request",
       "path": "packages/@abp/request",
+    },
+    {
+      "name": "@abp/tenant",
+      "path": "packages/@abp/tenant",
     },
     {
       "name": "@abp/ui",

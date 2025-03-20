@@ -116,7 +116,7 @@ const handleEdit = (row: IdentityUserDto) => {
 const handleDelete = async (row: IdentityUserDto) => {
   try {
     await deleteApi(row.id);
-    message.success($t('AbpUi.SuccessfullyDeleted'));
+    message.success($t('AbpUi.DeletedSuccessfully'));
     query();
   } catch {}
 };
@@ -150,46 +150,34 @@ const handlePermission = async (row: IdentityUserDto) => {
         </div>
       </template>
       <template #action="{ row }">
-        <div class="flex flex-row">
-          <div class="basis-1/3">
-            <Button @click="handleEdit(row)" block type="link">
-              <IconEdit />
-              {{ $t('AbpUi.Edit') }}
-            </Button>
-          </div>
-          <div class="basis-1/3">
-            <Popconfirm
-              placement="topRight"
-              v-if="
-                hasAccessByCodes([IdentityUserPermissions.ManagePermissions])
-              "
-              :title="$t('AbpUi.AreYouSure')"
-              @confirm="
-                async () => {
-                  handleDelete(row);
-                }
-              "
-            >
-              <Button block type="link" danger>
-                <IconDelete />
-                {{ $t('AbpUi.Delete') }}
-              </Button>
-            </Popconfirm>
-          </div>
-          <div class="basis-1/3">
-            <Button
-              block
-              type="link"
-              @click="handlePermission(row)"
-              v-if="
-                hasAccessByCodes([IdentityUserPermissions.ManagePermissions])
-              "
-            >
-              <IconPermissionsOutlined />
-              {{ $t('AbpPermissionManagement.Permissions') }}
-            </Button>
-          </div>
-        </div>
+        <Button @click="handleEdit(row)" size="small" type="link">
+          <IconEdit />
+          {{ $t('AbpUi.Edit') }}
+        </Button>
+        <Popconfirm
+          placement="topRight"
+          v-if="hasAccessByCodes([IdentityUserPermissions.ManagePermissions])"
+          :title="$t('AbpUi.AreYouSure')"
+          @confirm="
+            async () => {
+              handleDelete(row);
+            }
+          "
+        >
+          <Button size="small" type="link" danger>
+            <IconDelete />
+            {{ $t('AbpUi.Delete') }}
+          </Button>
+        </Popconfirm>
+        <Button
+          size="small"
+          type="link"
+          @click="handlePermission(row)"
+          v-if="hasAccessByCodes([IdentityUserPermissions.ManagePermissions])"
+        >
+          <IconPermissionsOutlined />
+          {{ $t('AbpPermissionManagement.Permissions') }}
+        </Button>
       </template>
     </Grid>
     <EditModal

@@ -13,5 +13,9 @@
       "create": "创建角色",
       "edit": "编辑角色"
     }
+  },
+  "AbpTenantManagement": {
+    "AdminPasswordConfirmationFailed": "两次输入的密码不一致",
+    "AdminPasswordRepeat": "确认密码"
   }
 }
