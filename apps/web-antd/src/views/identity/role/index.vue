@@ -65,9 +65,7 @@ const gridOptions: VxeGridProps<IdentityRoleDto> = {
       width: 250,
     },
   ],
-  height: 'auto',
-  exportConfig: {},
-  keepSource: true,
+
   proxyConfig: {
     ajax: {
       query: async ({ page }, formValues) => {
@@ -78,17 +76,6 @@ const gridOptions: VxeGridProps<IdentityRoleDto> = {
         });
       },
     },
-    response: {
-      total: 'totalCount',
-      list: 'items',
-    },
-  },
-  toolbarConfig: {
-    custom: true,
-    export: true,
-    // import: true,
-    refresh: true,
-    zoom: true,
   },
 };
 
@@ -172,46 +159,36 @@ const handlePermission = async (row: IdentityRoleDto) => {
         <span>{{ row.name }}</span>
       </template>
       <template #action="{ row }">
-        <div class="flex flex-row">
-          <div class="basis-1/3">
-            <Button
-              block
-              type="link"
-              v-access:code="[IdentityRolePermissions.Update]"
-              @click="handleEdit(row)"
-            >
-              <IconEdit />
-              {{ $t('AbpUi.Edit') }}
-            </Button>
-          </div>
-          <div class="basis-1/3">
-            <Button
-              :disabled="row.isStatic"
-              block
-              danger
-              type="link"
-              v-access:code="[IdentityRolePermissions.Delete]"
-              @click="handleDelete(row)"
-            >
-              <IconDelete />
-              {{ $t('AbpUi.Delete') }}
-            </Button>
-          </div>
-          <div class="basis-1/3">
-            <Button
-              v-if="
-                hasAccessByCodes([IdentityRolePermissions.ManagePermissions])
-              "
-              block
-              danger
-              type="link"
-              @click="handlePermission(row)"
-            >
-              <IconPermissionsOutlined />
-              {{ $t('AbpPermissionManagement.Permissions') }}
-            </Button>
-          </div>
-        </div>
+        <Button
+          size="small"
+          type="link"
+          v-access:code="[IdentityRolePermissions.Update]"
+          @click="handleEdit(row)"
+        >
+          <IconEdit />
+          {{ $t('AbpUi.Edit') }}
+        </Button>
+        <Button
+          :disabled="row.isStatic"
+          danger
+          type="link"
+          size="small"
+          v-access:code="[IdentityRolePermissions.Delete]"
+          @click="handleDelete(row)"
+        >
+          <IconDelete />
+          {{ $t('AbpUi.Delete') }}
+        </Button>
+        <Button
+          v-if="hasAccessByCodes([IdentityRolePermissions.ManagePermissions])"
+          danger
+          type="link"
+          size="small"
+          @click="handlePermission(row)"
+        >
+          <IconPermissionsOutlined />
+          {{ $t('AbpPermissionManagement.Permissions') }}
+        </Button>
       </template>
     </Grid>
     <RoleEditModal @change="() => query()" />

@@ -74,8 +74,7 @@ const getPermissionNodeState = computed(() => {
 
 const { cancel, getApi, updateApi } = usePermissionsApi();
 const [Modal, modalApi] = useVbenModal({
-  centered: true,
-  class: 'w-1/2',
+  class: 'w-1/3',
   closeOnClickModal: false,
   closeOnPressEscape: false,
   draggable: true,

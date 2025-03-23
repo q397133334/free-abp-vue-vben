@@ -28,9 +28,11 @@
   "dependencies": {
     "@abp/account": "workspace:*",
     "@abp/core": "workspace:*",
+    "@abp/features": "workspace:*",
     "@abp/identity": "workspace:*",
     "@abp/permissions": "workspace:*",
     "@abp/request": "workspace:*",
+    "@abp/tenant": "workspace:*",
     "@abp/ui": "workspace:*",
     "@vben/access": "workspace:*",
     "@vben/common-ui": "workspace:*",

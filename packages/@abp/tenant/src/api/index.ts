@@ -1,0 +1,1 @@
+export { useTenantsApi } from './useTenant';
