@@ -13,6 +13,10 @@
       "path": "apps/web-naive",
     },
     {
+      "name": "@vben/docs",
+      "path": "docs",
+    },
+    {
       "name": "@vben/commitlint-config",
       "path": "internal/lint-configs/commitlint-config",
     },
